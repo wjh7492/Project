@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="view">
+ 	<select id="selectSY" resultType="HashMap">
+ 		select value from summer where type ='Y'
+ 	</select>
+ 	<select id="selectSA" resultType="HashMap">
+ 		select value from summer where type ='A';
+ 	</select>
+ 	<select id="selectSC" resultType="HashMap">
+ 		select value from summer where type ='C';
+ 	</select>
+ 	<select id="selectSM" resultType="HashMap">
+ 		select value from summer where type ='M';
+ 	</select>
+ 	
+ 	<select id="selectWY" resultType="HashMap">
+ 		select value from winter where type ='Y'
+ 	</select>
+ 	<select id="selectWA" resultType="HashMap">
+ 		select value from winter where type ='A';
+ 	</select>
+ 	<select id="selectWC" resultType="HashMap">
+ 		select value from winter where type ='C';
+ 	</select>
+ 	<select id="selectWM" resultType="HashMap">
+ 		select value from winter where type ='M';
+ 	</select>
+</mapper>
