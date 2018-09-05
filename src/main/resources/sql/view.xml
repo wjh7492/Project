@@ -20,12 +20,22 @@
  		select value from winter where type ='Y'
  	</select>
  	<select id="selectWA" resultType="HashMap">
- 		select value from winter where type ='A';
+ 		select value from winter where type ='A' order by value asc;
  	</select>
  	<select id="selectWC" resultType="HashMap">
- 		select value from winter where type ='C';
+ 		select value from winter where type ='C' order by value asc;
  	</select>
  	<select id="selectWM" resultType="HashMap">
  		select value from winter where type ='M';
+ 	</select>
+ 	
+ 	<select id="selectsum" resultType="HashMap">
+ 		select * from sports where type ='s';
+ 	</select>
+ 	<select id="selectwin" resultType="HashMap">
+ 		select * from sports where type ='w';
+ 	</select>
+ 	<select id="selectCon" resultType="HashMap" parameterType="HashMap">
+ 		select * from sports where no = #{no};
  	</select>
 </mapper>

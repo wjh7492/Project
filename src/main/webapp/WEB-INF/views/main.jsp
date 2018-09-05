@@ -25,7 +25,23 @@
            back(); 
         });
         $("#next").click(function(){
-           next(); 
+        	if(img_position==7){
+        		return false;
+        	}else{
+           		next(); 
+        	}
+        });
+        $("#facebook").on("click", function(){
+        	location.href="https://www.facebook.com/olympics//"
+        });
+        $("#instagram").on("click", function(){
+        	location.href="https://www.instagram.com/olympic/"
+        });
+        $("#twitter").on("click", function(){
+        	location.href="https://twitter.com/olympiko"
+        });
+        $("#youtube").on("click", function(){
+        	location.href="https://www.youtube.com/results?search_query=%EC%98%AC%EB%A6%BC%ED%94%BD"
         });
         
         function back(){
@@ -67,55 +83,55 @@
         </div>
         <div class="social">
             <div>
-                <img src="/web/resources/img/facebook.png">
-                <img src="/web/resources/img/instagram.png">
-                <img src="/web/resources/img/twitter.png">
-                <img src="/web/resources/img/youtube.png">
+                <img id="facebook" src="/resources/img/facebook.png">
+                <img id="instagram" src="/resources/img/instagram.png">
+                <img id="twitter" src="/resources/img/twitter.png">
+                <img id="youtube" src="/resources/img/youtube.png">
             </div>
         </div>
     </div>
     <div id="menubar">
         <ul>
-            <li><a href="/web/mmr">Home</a></li>
-            <li><a href="/web/sports">Sports</a></li>
-            <li><a href="/web/mapreduce">MapReduce</a></li>
+            <li><a href="/">홈</a></li>
+            <li><a href="/sports">스포츠</a></li>
+            <li><a href="/mapreduce">분석</a></li>
         </ul>
     </div>
     <div id="div2">
         <div class="subject" style="padding-left: 190px; padding-top: 30px;">
             OLYMPIC GAMES
         </div>
-        <img id="back" src="/web/resources/img/left3.png" alt="" width="50">
+        <img id="back" src="/resources/img/left3.png" alt="" width="50">
         <div class="slide">
             <ul>
-                <li><img src="/web/resources/img/poster/1896.jpg"></li>
-                <li><img src="/web/resources/img/poster/1900.jpg"></li>
-                <li><img src="/web/resources/img/poster/1904.jpg"></li>
-                <li><img src="/web/resources/img/poster/1908.jpg"></li>
-                <li><img src="/web/resources/img/poster/1912.jpg"></li>
-                <li><img src="/web/resources/img/poster/1920.jpg"></li>
-                <li><img src="/web/resources/img/poster/1924.jpg"></li>
-                <li><img src="/web/resources/img/poster/1928.jpg"></li>
-                <li><img src="/web/resources/img/poster/1932.jpg"></li>
-                <li><img src="/web/resources/img/poster/1936.jpg"></li>
-                <li><img src="/web/resources/img/poster/1948.jpg"></li>
-                <li><img src="/web/resources/img/poster/1952.jpg"></li>
-                <li><img src="/web/resources/img/poster/1956.jpg"></li>
-                <li><img src="/web/resources/img/poster/1960.jpg"></li>
-                <li><img src="/web/resources/img/poster/1964.jpg"></li>
-                <li><img src="/web/resources/img/poster/1968.jpg"></li>
-                <li><img src="/web/resources/img/poster/1972.jpg"></li>
-                <li><img src="/web/resources/img/poster/1976.jpg"></li>
-                <li><img src="/web/resources/img/poster/1980.jpg"></li>
-                <li><img src="/web/resources/img/poster/1984.jpg"></li>
-                <li><img src="/web/resources/img/poster/1988.jpg"></li>
-                <li><img src="/web/resources/img/poster/1992.jpg"></li>
-                <li><img src="/web/resources/img/poster/1996.jpg"></li>
-                <li><img src="/web/resources/img/poster/2000.jpg"></li>
-                <li><img src="/web/resources/img/poster/2004.jpg"></li>
-                <li><img src="/web/resources/img/poster/2008.jpg"></li>
+                <li><img src="/resources/img/poster/1896.jpg"></li>
+                <li><img src="/resources/img/poster/1900.jpg"></li>
+                <li><img src="/resources/img/poster/1904.jpg"></li>
+                <li><img src="/resources/img/poster/1908.jpg"></li>
+                <li><img src="/resources/img/poster/1912.jpg"></li>
+                <li><img src="/resources/img/poster/1920.jpg"></li>
+                <li><img src="/resources/img/poster/1924.jpg"></li>
+                <li><img src="/resources/img/poster/1928.jpg"></li>
+                <li><img src="/resources/img/poster/1932.jpg"></li>
+                <li><img src="/resources/img/poster/1936.jpg"></li>
+                <li><img src="/resources/img/poster/1948.jpg"></li>
+                <li><img src="/resources/img/poster/1952.jpg"></li>
+                <li><img src="/resources/img/poster/1956.jpg"></li>
+                <li><img src="/resources/img/poster/1960.jpg"></li>
+                <li><img src="/resources/img/poster/1964.jpg"></li>
+                <li><img src="/resources/img/poster/1968.jpg"></li>
+                <li><img src="/resources/img/poster/1972.jpg"></li>
+                <li><img src="/resources/img/poster/1976.jpg"></li>
+                <li><img src="/resources/img/poster/1980.jpg"></li>
+                <li><img src="/resources/img/poster/1984.jpg"></li>
+                <li><img src="/resources/img/poster/1988.jpg"></li>
+                <li><img src="/resources/img/poster/1992.jpg"></li>
+                <li><img src="/resources/img/poster/1996.jpg"></li>
+                <li><img src="/resources/img/poster/2000.jpg"></li>
+                <li><img src="/resources/img/poster/2004.jpg"></li>
+                <li><img src="/resources/img/poster/2008.jpg"></li>
             </ul>
-            <ul id="top250">
+            <ul id="top250" >
                 <li><h5>ATHENS 1896</h5></li>
                 <li><h5>PARIS 1900</h5></li>
                 <li><h5>ST LOUIS 1904</h5></li>
@@ -144,7 +160,7 @@
                 <li><h5>BEIJING 2008</h5></li>
             </ul>
         </div>
-        <img id="next" src="/web/resources/img/right3.png" alt="" width="50">
+        <img id="next" src="/resources/img/right3.png" alt="" width="50">
     </div>
     <hr>
     <div>
@@ -156,12 +172,12 @@
                 <li class="float_left dis_in_block ta_left height_100 margin_right1" style="background-color: white; width: 35%; left: 0;">
                     <div class="width_100 height_50 dis_in_block">
                         <video width="100%" height="300px" controls>
-                          <source src="/web/resources/video/1.mp4" type="video/mp4">
+                          <source src="/resources/video/1.mp4" type="video/mp4">
                         </video>
                     </div>
                     <div class="width_100 height_50">
                         <div class="contants">
-                            <div class="bold">
+                            <div class="bold" style="margin-top: 10px;">
 10 Impressive moments in 2016 Rio Olympic Games</div>
                         </div>
                     </div>
@@ -169,7 +185,7 @@
                 <li class="float_left dis_in_block ta_left height_100 margin_right1" style="background-color: white; width: 30%">
                     <div class="width_100 height_50">
                         <video width="100%" height="250px" controls>
-                          <source src="/web/resources/video/part1.mp4" type="video/mp4">
+                          <source src="/resources/video/part1.mp4" type="video/mp4">
                         </video>
                     </div>
                     <div class="width_100 height_50">
@@ -181,7 +197,7 @@
                 <li class="float_left dis_in_block ta_left height_100 margin_right1" style="background-color: white; width: 30%">
                     <div class="width_100 height_50">
                         <video width="100%" height="250px" controls>
-                          <source src="/web/resources/video/part2.mp4" type="video/mp4">
+                          <source src="/resources/video/part2.mp4" type="video/mp4">
                         </video>
                     </div>
                     <div class="width_100 height_50">
@@ -195,15 +211,15 @@
         </div>
     </div>
     <footer>
-        <div class="width_100 height_150" style="background: #333; padding-left: 20%;">
+        <div class="width_100 height_150 padding50" style="background: #333; padding-left: 20%;">
             <div class="footer_img">
-                <img src="/web/resources/img/logo-90.png">
+                <img src="/resources/img/logo-90.png">
             </div>
             <div class="footer_font">
                 MMR : 조원희   서울시 금천구 가산디지털2로 115, 811호<br>
             </div>
             <div class="footer_font">
-            대표번호 : 010-4902-5657 | E-mail : wjh7492@naver.com
+            	전화번호 : 010-4902-5657 | E-mail : wjh7492@naver.com
             </div>
         </div>
     </footer>

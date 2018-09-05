@@ -38,7 +38,7 @@ public class OlympicMapper extends Mapper<LongWritable, Text, Text, IntWritable>
 			if(mb.getYear().equals(MRController.selectY)) {
 				if(mb.getCountry().equals(MRController.selectC)) {
 					if(mb.getAthlete().equals(MRController.selectA)) {
-						outputKey.set(mb.getAthlete());
+						outputKey.set(mb.getMedal());
 						context.write(outputKey, outputValue);
 					}
 				}

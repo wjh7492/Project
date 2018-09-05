@@ -8,9 +8,10 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <link href="https://fonts.googleapis.com/css?family=Dancing+Script|Hanalei+Fill" rel="stylesheet">
 <link rel="stylesheet" href="resources/main.css">
+<script type="text/javascript" src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+<script type="text/javascript" src="https://www.amcharts.com/lib/3/pie.js"></script>
 <script>
 	var viewList = [{dataURL: "/eis/getData/google",
 		options: {'title': 'copy'},
@@ -18,71 +19,61 @@
     $(document).ready(function(){
     	$.ajax({
     		  type: "get",
-    		  url: "/web/dir",
+    		  url: "/dir",
     		  data: {"number" : 1}
     		}).done(function(data) {
     			var result = data.result;
     			$.each(result,function(key,value){
-    				console.log(key)
-    				$.each(value,function(key,value){
-    					console.log(value);
-    					$("#dataList").append("<li><button type='button' class='btn1'>" + key + "</button></li>")    					
-    				});
+    				$("#dataList").prepend("<li><button type='button' class='btn1' value='"+ value.key +"'>" + value.type + "</button></li>");
     			});
     			$("#datalist li button").on("click", function(){
-    				$("#step2").show();
+    				$("#step2").fadeIn();
     				
     				$("#bar_div").css("width", "25%");
     				$("#bar_div").html("25%");
-    				var choice = $(this).text();
+    				var choice = $(this).val();
     				$.ajax({
     					type: "post",
-    					url: "/web/click",
+    					url: "/click",
     					data: {"choice": choice}
     				}).done(function(data){
-    					console.log(data);
     					var Y = data.Ylist;
     					var C = data.Clist;
     					var A = data.Alist;
     					var M = data.Mlist;
+						$("#selectY").empty();
+						$("#selectC").empty();
+						$("#selectA").empty();
+						$("#selectM").empty();
     					$.each(Y, function(key, value){
-    						$.each(value, function(key, value){
-    							$("#selectY").append("<option>" + value + "</option>")
-    						});
+   							$("#selectY").append("<option>" + value.value + "</option>");
     					});
     					$.each(C, function(key, value){
-    						$.each(value, function(key, value){
-    							$("#selectC").append("<option>" + value + "</option>")
-    						});
+   							$("#selectC").append("<option>" + value.value + "</option>")
     					});
     					$.each(A, function(key, value){
-    						$.each(value, function(key, value){
-    							$("#selectA").append("<option>" + value + "</option>")
-    						});
+   							$("#selectA").append("<option>" + value.value + "</option>")
     					});
     					$.each(M, function(key, value){
-    						$.each(value, function(key, value){
-    							$("#selectM").append("<option>" + value + "</option>")
-    						});
+   							$("#selectM").append("<option>" + value.value + "</option>")
     					});
     				});
     				$("#ct").off().on("click", function(){
-    					$("#step3").show();
+    					$("#step3").fadeIn("slow");
     					$("#selectC").hide();
     					$("#selectA").show();
     					$("#selectM").show();
     					var choice1 = $(this).text();
-    					console.log(choice);
-    					
     					
     					$("#bar_div").css("width", "50%");
         				$("#bar_div").html("50%");
+        				
         				
 	    				Mapreduce(choice, choice1);
         				
     				});
     				$("#at").off().on("click", function(){
-    					$("#step3").show();
+    					$("#step3").fadeIn("slow");
     					$("#selectA").hide();
     					$("#selectC").show();
     					$("#selectM").show();
@@ -96,7 +87,7 @@
         				
     				});
     				$("#md").off().on("click", function(){
-    					$("#step3").show();
+    					$("#step3").fadeIn("slow");
     					$("#selectM").hide();
     					$("#selectA").show();
     					$("#selectC").show();
@@ -111,11 +102,33 @@
     				});
     			});
     		});
+        $("#facebook").on("click", function(){
+        	location.href="https://www.facebook.com/olympics//"
+        });
+        $("#instagram").on("click", function(){
+        	location.href="https://www.instagram.com/olympic/"
+        });
+        $("#twitter").on("click", function(){
+        	location.href="https://twitter.com/olympiko"
+        });
+        $("#youtube").on("click", function(){
+        	location.href="https://www.youtube.com/results?search_query=%EC%98%AC%EB%A6%BC%ED%94%BD"
+        });
+        
+    	 function parseData(data){
+             for(var i =0; i < data.length; i++){
+                data[i]["1"] = parseInt(data[i]["1"]);
+             }
+          }
+         $(window).on("load", function() {    
+       	     $('#loading').hide();  
+  	    });
+    	
     
     
     	function Mapreduce(choice, choice1){
     		$("#select").off().on("click", function(){
-				$("#step4").show();
+				$("#loading").show();
 				
 				$("#bar_div").css("width", "75%");
 				$("#bar_div").html("75%");
@@ -127,7 +140,7 @@
 				
 				$.ajax({
 					type:"post",
-					url:"/web/cm",
+					url:"/cm",
 					data:{"selectY": selectY,
 						"selectC": selectC,
 						"selectA": selectA,
@@ -140,42 +153,50 @@
 					var saveDir = data.saveDir;
 					$.ajax({
 						type: "post",
-						url: "/web/drawing",
+						url: "/drawing",
 						data: {"chart": saveDir}
 					}).done(function(data){
-						var chart = data.resultList;
-						google.charts.load('current', {'packages':['corechart']});
-					    google.charts.setOnLoadCallback(drawChart);
-				      	function drawChart() {
-				        	var chartData = new google.visualization.DataTable();
-
-				        	chartData.addColumn("string", "UniqueCarrier");
-				    		chartData.addColumn("number", "Medal");
-
-				    		$.each(chart, function(index, value) {
-				    			var row = [];
-				    			for(var i = 0; i < 2; i++){
-				    				row[i] = (i != 0) ? Number(value[i]) : value[i];
-				    			}
-				    			chartData.addRows([ row ]);
-				    		});
-
-				    		var option = {
-					   			    chartType: 'PieChart',
-					   			 	dataTable: chartData,
-					   			    options: {title: 'Distance', is3D: true},
-					   			    containerId : 'chart_body'
-					   			  };
-
-				    		var wrapper = new google.visualization.ChartWrapper(option);
-				    		wrapper.draw();
-					      }
-					});
-				});
+						var d = data.resultList;
+						parseData(d);
+						if(d["0"]["0"] ==""){
+							$("#loading").hide();
+							$("#chart_body").hide();
+							alert("메달을 획득하지 못했습니다");
+						}else{
+							$("#loading").hide();  
+			    	     	   AmCharts.makeChart("chart_body",
+			    	   				{
+			    	   					"type": "pie",
+			    	   					"angle": 22.5,
+			    	   					"balloonText": "[[title]]<br><span style='font-size:14px'><b>[[value]]</b> ([[percents]]%)</span>",
+			    	   					"depth3D": 20,
+			    	   					"titleField": "0",
+			    	   					"valueField": "1",
+			    	   					"allLabels": [],
+			    	   					"balloon": {},
+			    	   					"legend": {
+			    	   						"enabled": true,
+			    	   						"align": "center",
+			    	   						"markerType": "circle"
+			    	   					},
+			    	   					"titles": [{"text" : "메달", "size" : 30}],
+			    	   					"dataProvider": d
+			    	   				}
+			    	   			);
+						}
+					});  //2
+					$("#chart_body").fadeIn(2000);
+					$("#step4").show();
+					
+				}); //1
 				
 			});
+    		$("#reset").on("click", function(){
+    			$("#step2").hide();
+    			$("#step3").hide();
+    			$("#chart_body").hide();
+    		});
     	}
-    	
     });
 </script>
 	<title> MapReduce </title>
@@ -184,7 +205,7 @@
      <div id="div1">
         <div class="logo">
             <div>
-                <img src="/web/resources/img/logo.png">
+                <img src="/resources/img/logo.png">
             </div>
         </div>
         <div class="webnm">
@@ -199,79 +220,70 @@
         </div>
         <div class="social">
             <div>
-                <img src="/web/resources/img/facebook.png">
-                <img src="/web/resources/img/instagram.png">
-                <img src="/web/resources/img/twitter.png">
-                <img src="/web/resources/img/youtube.png">
+                <img id="facebook" src="/resources/img/facebook.png">
+                <img id="instagram" src="/resources/img/instagram.png">
+                <img id="twitter" src="/resources/img/twitter.png">
+                <img id="youtube" src="/resources/img/youtube.png">
             </div>
         </div>
     </div>
     <div id="menubar">
         <ul>
-            <li><a href="/web/mmr">Home</a></li>
-            <li><a href="/web/sports">Sports</a></li>
-            <li><a href="/web/mapreduce">MapReduce</a></li>
+            <li><a href="/">홈</a></li>
+            <li><a href="/sports">스포츠</a></li>
+            <li><a href="/mapreduce">분석</a></li>
         </ul>
     </div>
-	<div id="wrap">
-		<h1>올림픽 메달 시각화</h1>
-		<div id="step1">
-			<h3>항공사 데이터 목록</h3>
-			<ul id="dataList">
-			</ul>
-			<hr>
-		</div>
-		<div id="step2">
-			<h3>분석 종류</h3>
-			<!-- 버튼를 클릭 시 step1에서 선택한 파일를 MapReduce 처리 하기 -->
-            <ul id="choiceList">
-                <li><button type="button" class="btn1" id="ct">나라</button></li>
-                <li><button type="button" class="btn1" id="at">종목</button></li>
-                <li><button type="button" class="btn1" id="md">메달</button></li>
-            </ul>
-			<hr>
-		</div>
-        <div id="step3">
-			<h3>분석 상세분류</h3>
-			<!-- 버튼를 클릭 시 step1에서 선택한 파일를 MapReduce 처리 하기 -->
-			<select id=selectY>
-            </select>
-            <select id=selectC>
-            </select>
-            <select id=selectA>
-            </select>
-            <select id=selectM>
-            </select>
-            <button id=select>분석</button>
-			<hr>
-		</div>
-		<div id="step4">
-			<h3>분석 결과</h3>
-			<div id="chart_body">PieChart 영역</div>
-			<hr>
-		</div>
-		<div id="step5">
-			<!-- 프로젝트 "resources/upload/" 경로에 현재 시간 이름으로 이미지 저장 -->
-			<button type="button" class="btn1" id="img">이미지 저장</button>
-			<!-- 선택된 내용을 모두 초기화 하고 step1번 내용만 다시 보여주기 (step2 ~ step5는 화면 숨기기) -->
-			<button type="button" class="btn1" id="default">초기화</button>
-			<hr>
-		</div>
-		<h3>분석 진행률</h3>
-		<div id="bar_body">
-			<div id="bar_div">0%</div>
-		</div>
-	</div>
+	<div id="wrap1">
+        <div id="wrap2">
+            <div id="wrap3">
+	            <div style="text-align: center;">
+	            <h2>올림픽 메달 분석</h2>
+	            </div>
+                <div id="step1" style="padding-top: 70px; text-align: center;">
+                    <ul id="dataList">
+			        </ul>
+                </div>
+                <div id="step2">
+                    <ul id="choiceList">
+                        <li><button type="button" id="ct">나라</button></li>
+                        <li><button type="button" id="at">종목</button></li>
+                        <li><button type="button" id="md">메달</button></li>
+                    </ul>
+                </div>
+                <div id="step3">
+                    <select id=selectY>
+                    </select>
+                    <select id=selectC>
+                    </select>
+                    <select id=selectA>
+                    </select>
+                    <select id=selectM>
+                    </select>
+                    <button type="button" id="select">분석</button>
+                    <button type="button" id="reset">초기화</button>
+                </div>
+            </div>
+            <div id="step4">
+            <div>
+            	<h2>분석차트</h2>
+            </div>
+                <div id="chart_body"></div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="loading" style="display: none;"><img id="loading-image" src="/resources/img/loading.gif" alt="Loading..." /></div>
     <footer>
-        <div class="width_100 height_150" style="background: #333; padding-left: 20%;">
+        <div class="width_100 height_150 padding50" style="background: #333; padding-left: 20%; float:left;">
             <div class="footer_img">
-                <img src="/web/resources/img/logo-90.png">
+                <img src="/resources/img/logo-90.png">
             </div>
             <div class="footer_font">
                 MMR : 조원희   서울시 금천구 가산디지털2로 115, 811호<br>
             </div>
             <div class="footer_font">
-            	대표번호 : 010-4902-5657 | E-mail : wjh7492@naver.com
+            	전화번호 : 010-4902-5657 | E-mail : wjh7492@naver.com
             </div>
         </div>
     </footer>

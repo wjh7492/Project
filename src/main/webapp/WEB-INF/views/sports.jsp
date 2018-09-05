@@ -16,19 +16,116 @@
         $('html, body').animate({scrollTop : offset.top}, 400)
     }
     $(document).ready(function(){
-        $("li.overout").mouseover(function(){
-            $(this).find("img").hide();
-        })
-        $("li.overout").mouseover(function(){
-            $(this).find("div").show();
-        })
-        $("li.overout").mouseout(function(){
-            $(this).find("img").show();
-        })
-        $("li.overout").mouseout(function(){
-            $(this).find("div").hide();
-        })
-    });
+    	
+    	sportList("/sumList","#sports1 ul", "#sports1 ul li");
+    	sportList("/winList","#sports2 ul", "#sports2 ul li");
+		
+		function sportList(listurl, ul, li){
+			$.ajax({
+				type:"post",
+				url: listurl
+			}).done(function(data){
+				var j = JSON.parse(data);
+				var result = j.result;
+				$.each(result,function(key,value){
+					$(ul).append("<li class='overout'><a href='#layer2' class='btn-example'><img src=" + value.imgurl + "><div>" + value.title + "</div></a></li>");
+				});
+				$('.btn-example').click(function(){
+			        var $href = $(this).attr('href');
+			        layer_popup($href);
+			    });
+				$("li.overout").mouseover(function(){
+	            $(this).find("img").hide();
+		        })
+		        $("li.overout").mouseover(function(){
+		            $(this).find("div").show();
+		        })
+		        $("li.overout").mouseout(function(){
+		            $(this).find("img").show();
+		        })
+		        $("li.overout").mouseout(function(){
+		            $(this).find("div").hide();
+		        });
+		        $(li).on("click", function(){
+		        	var number = $(this).index();
+		        	if(li=="#sports1 ul li"){
+		        		var index = number + 1		        		
+		        	}else if(li=="#sports2 ul li"){
+		        		var index = number + 43	
+		        	}
+		        	$.ajax({
+		    			type:"post",
+		    			url:"/contents",
+		    			data: {"index" : index}
+		    		}).done(function(data){
+		    			var i = JSON.parse(data);
+		    			var result = i.result;
+		    			
+		    			
+		    			$("#contents").append("<p class='ctxt mb20'><h3>" + result.title + "</h3><br>" + result.content + "</p>")
+		    		});
+		        	$("#sports1 li a").bind('click', false);
+		        	$("#sports2 li a").bind('click', false);
+		        	
+		        });
+			});
+	        $("#facebook").on("click", function(){
+	        	location.href="https://www.facebook.com/olympics//"
+	        });
+	        $("#instagram").on("click", function(){
+	        	location.href="https://www.instagram.com/olympic/"
+	        });
+	        $("#twitter").on("click", function(){
+	        	location.href="https://twitter.com/olympiko"
+	        });
+	        $("#youtube").on("click", function(){
+	        	location.href="https://www.youtube.com/results?search_query=%EC%98%AC%EB%A6%BC%ED%94%BD"
+	        });
+    	}
+		
+	    function layer_popup(el){
+
+	        var $el = $(el);        //레이어의 id를 $el 변수에 저장
+	        var isDim = $el.prev().hasClass('dimBg');   //dimmed 레이어를 감지하기 위한 boolean 변수
+
+	        isDim ? $('.dim-layer').fadeIn() : $el.fadeIn();
+
+	        var $elWidth = ~~($el.outerWidth()),
+	            $elHeight = ~~($el.outerHeight()),
+	            docWidth = $(document).width(),
+	            docHeight = $(document).height();
+
+	        // 화면의 중앙에 레이어를 띄운다.
+	        if ($elHeight < docHeight || $elWidth < docWidth) {
+	            $el.css({
+	                marginTop: -$elHeight /2,
+	                marginLeft: -$elWidth/2
+	            })
+	        } else {
+	            $el.css({top: 0, left: 0});
+	        }
+
+	        $el.find('a.btn-layerClose').click(function(){
+	            isDim ? $('.dim-layer').fadeOut() : $el.fadeOut(); // 닫기 버튼을 클릭하면 레이어가 닫힌다.
+	            return false;
+	        });
+
+	        $('.layer .dimBg').click(function(){
+	            $('.dim-layer').fadeOut();
+	            return false;
+	        });
+	        $("#btn_close").on("click", function(){
+	        	$("#contents").text("");
+	        	$("#sports1 li a").unbind('click', false);
+	        	$("#sports2 li a").unbind('click', false);
+	        });
+
+
+	    }
+	    
+	    
+	    
+    });  //다큐먼트 레디 끝
     
     
 </script>
@@ -39,7 +136,7 @@
     <div id="div1">
         <div class="logo">
             <div>
-                <img src="/web/resources/img/logo.png">
+                <img src="/resources/img/logo.png">
             </div>
         </div>
         <div class="webnm">
@@ -54,18 +151,18 @@
         </div>
         <div class="social">
             <div>
-                <img src="/web/resources/img/facebook.png">
-                <img src="/web/resources/img/instagram.png">
-                <img src="/web/resources/img/twitter.png">
-                <img src="/web/resources/img/youtube.png">
+                <img id="facebook" src="/resources/img/facebook.png">
+                <img id="instagram" src="/resources/img/instagram.png">
+                <img id="twitter" src="/resources/img/twitter.png">
+                <img id="youtube" src="/resources/img/youtube.png">
             </div>
         </div>
     </div>
     <div id="menubar">
         <ul>
-            <li><a href="/web/mmr">Home</a></li>
-            <li><a href="/web/sports">Sports</a></li>
-            <li><a href="/web/mapreduce">MapReudce</a></li>
+            <li><a href="/">홈</a></li>
+            <li><a href="/sports">스포츠</a></li>
+            <li><a href="/mapreduce">분석</a></li>
         </ul>
     </div>
     <div class="sports_menu">
@@ -75,84 +172,43 @@
             <li onclick="fnMove('2')" style="margin-left: 10px;">WINTER SPORTS</li>
         </ul>
     </div>
+	<div class="dim-layer">
+	    <div class="dimBg"></div>
+	    <div id="layer2" class="pop-layer">
+	        <div class="pop-container">
+	            <div id="contents" class="pop-conts">
+	                <!--content //-->
+	
+	               
+	                <!--// content-->
+	            </div>
+	             <div class="btn-r">
+	                    <a id="btn_close" href="#" class="btn-layerClose">Close</a>
+	             </div>
+	        </div>
+	    </div>
+	</div>
     <div id="sports1">
         <h2 style="text-align: center; padding-bottom: 30px;">SUMMER SPORTS</h2>
         <ul>
-            <li class="overout"><img src="/web/resources/img/sports/ARCHERY.png"><div>양궁</div></li>
-            <li class="overout"><img src="/web/resources/img/sports/ATHLETICE.png"><div>육상</div></li>
-            <li class="overout"><img src="/web/resources/img/sports/BADMINTON.png"><div>배드민턴</div></li>
-            <li class="overout"><img src="/web/resources/img/sports/BASKETBALL.png"><div>농구</div></li>
-            <li class="overout"><img src="/web/resources/img/sports/BEACH%20VOLLEYBALL.png"><div>비치발리볼</div></li>
-            <li class="overout"><img src="/web/resources/img/sports/BOXING.png"><div>복싱</div></li>
-            <li class="overout"><img src="/web/resources/img/sports/CANOE%20SLALOM.png"><div>카누슬라롬</div></li>
-            <li class="overout"><img src="/web/resources/img/sports/CANOE%20SPRINT.png"><div>카누스프린트</div></li>
-            <li class="overout"><img src="/web/resources/img/sports/CYCLING%20BMX.png"><div>사이클링</div></li>
-            <li class="overout"><img src="/web/resources/img/sports/CYCLING%20MOUNTAIN%20BIKE.png"><div>산악자전거</div></li>
-            <li class="overout"><img src="/web/resources/img/sports/CYCLING%20ROAD.png"><div>자전거도로</div></li>
-            <li class="overout"><img src="/web/resources/img/sports/CYCLING%20TRACK.png"><div>사이클링트랙</div></li>
-            <li class="overout"><img src="/web/resources/img/sports/DIVING.png"><div>다이빙</div></li>
-            <li class="overout"><img src="/web/resources/img/sports/EQUESTRIAN%20DRESSAGE.png"><div>승마/조마</div></li>
-            <li class="overout"><img src="/web/resources/img/sports/EQUESTRIAN%20EVENTING.png"><div>승마경기</div></li>
-            <li class="overout"><img src="/web/resources/img/sports/EQUESTRIAN%20JUMPING.png"><div>승마점프</div></li>
-            <li class="overout"><img src="/web/resources/img/sports/FENCING.png"><div>펜싱</div></li>
-            <li class="overout"><img src="/web/resources/img/sports/FOOTBALL.png"><div>축구</div></li>
-            <li class="overout"><img src="/web/resources/img/sports/GOLF.png"><div>골프</div></li>
-            <li class="overout"><img src="/web/resources/img/sports/GYMNASTICS%20ARTISTIC.png"><div>기계체조</div></li>
-            <li class="overout"><img src="/web/resources/img/sports/GYMNASTICS%20RHYTHMIC.png"><div>리듬체조</div></li>
-            <li class="overout"><img src="/web/resources/img/sports/HANDBALL.png"><div>핸드볼</div></li>
-            <li class="overout"><img src="/web/resources/img/sports/HOCKEY.png"><div>하키</div></li>
-            <li class="overout"><img src="/web/resources/img/sports/JUDO.png"><div>유도</div></li>
-            <li class="overout"><img src="/web/resources/img/sports/MARATHON%20SWIMMING.png"><div>마라톤수영</div></li>
-            <li class="overout"><img src="/web/resources/img/sports/MODERN%20PENTATHLON.png"><div>근대5종경기</div></li>
-            <li class="overout"><img src="/web/resources/img/sports/ROWING.png"><div>조정</div></li>
-            <li class="overout"><img src="/web/resources/img/sports/RUGBY.png"><div>럭비</div></li>
-            <li class="overout"><img src="/web/resources/img/sports/SAILING.png"><div>세일링</div></li>
-            <li class="overout"><img src="/web/resources/img/sports/SHOOTING.png"><div>사격</div></li>
-            <li class="overout"><img src="/web/resources/img/sports/SWIMMING.png"><div>수영</div></li>
-            <li class="overout"><img src="/web/resources/img/sports/SYNCHRONIZED%20SWIMMING.png"><div>싱크로나이즈</div></li>
-            <li class="overout"><img src="/web/resources/img/sports/TABLE%20TENNIS.png"><div>탁구</div></li>
-            <li class="overout"><img src="/web/resources/img/sports/TAEKWONDO.png"><div>태권도</div></li>
-            <li class="overout"><img src="/web/resources/img/sports/TENNIS.png"><div>테니스</div></li>
-            <li class="overout"><img src="/web/resources/img/sports/TRAMPOLINE.png"><div>트램폴린</div></li>
-            <li class="overout"><img src="/web/resources/img/sports/TRIATHLON.png"><div>철인3종경기</div></li>
-            <li class="overout"><img src="/web/resources/img/sports/VOLLEYBALL.png"><div>배구</div></li>
-            <li class="overout"><img src="/web/resources/img/sports/WATER%20POLO.png"><div>수구</div></li>
-            <li class="overout"><img src="/web/resources/img/sports/WEIGHTLIFTING.png"><div>역도</div></li>
-            <li class="overout"><img src="/web/resources/img/sports/WRESTLING%20FREESTYLE.png"><div>레슬링자유형</div></li>
-            <li class="overout"><img src="/web/resources/img/sports/WRESTLING%20FREESTYLE.png"><div>그레코로만</div></li>
         </ul>
     </div>
     <hr style="padding: 30px 0px;">
     <div id="sports2">
         <h2 style="text-align: center; padding-bottom: 30px;">WINTER SPORTS</h2>
         <ul>
-            <li class="overout"><img src="/web/resources/img/sports/ALPINE%20SKING.png"><div>알파인스키</div></li>
-            <li class="overout"><img src="/web/resources/img/sports/BIATHLON.png"><div>바이애슬론</div></li>
-            <li class="overout"><img src="/web/resources/img/sports/BOBSLEIGH.png"><div>봅슬레이</div></li>
-            <li class="overout"><img src="/web/resources/img/sports/CROSS%20COUNTRY%20SKIING.png"><div>크로스컨트리</div></li>
-            <li class="overout"><img src="/web/resources/img/sports/CURLING.png"><div>컬링</div></li>
-            <li class="overout"><img src="/web/resources/img/sports/FIGURE%20SKATING.png"><div>피겨스케이팅</div></li>
-            <li class="overout"><img src="/web/resources/img/sports/FREESTYLE%20SKIING.png"><div>프리스타일스키</div></li>
-            <li class="overout"><img src="/web/resources/img/sports/ICE%20HOCKEY.png"><div>아이스하키</div></li>
-            <li class="overout"><img src="/web/resources/img/sports/LUGE.png"><div>루지</div></li>
-            <li class="overout"><img src="/web/resources/img/sports/NORDIC%20COMBINED.png"><div>노르딕복합</div></li>
-            <li class="overout"><img src="/web/resources/img/sports/SHORT%20TRACK%20SPEED%20SKATING.png"><div>쇼트트랙</div></li>
-            <li class="overout"><img src="/web/resources/img/sports/SKELETON.png"><div>스켈레톤</div></li>
-            <li class="overout"><img src="/web/resources/img/sports/SKI%20JUMPING.png"><div>스키점프</div></li>
-            <li class="overout"><img src="/web/resources/img/sports/SNOWBOARD.png"><div>스노보드</div></li>
-            <li class="overout"><img src="/web/resources/img/sports/SPEED%20SKATING.png"><div>스피드스케이팅</div></li>
         </ul>
     </div>
     <footer>
-        <div class="width_100 height_150" style="background: #333; padding-left: 20%;">
+        <div class="width_100 height_150 padding50" style="background: #333; padding-left: 20%;">
             <div class="footer_img">
-                <img src="/web/resources/img/logo-90.png">
+                <img src="/resources/img/logo-90.png">
             </div>
             <div class="footer_font">
                 MMR : 조원희   서울시 금천구 가산디지털2로 115, 811호<br>
             </div>
             <div class="footer_font">
-            대표번호 : 010-4902-5657 | E-mail : wjh7492@naver.com
+            	전화번호 : 010-4902-5657 | E-mail : wjh7492@naver.com
             </div>
         </div>
     </footer>

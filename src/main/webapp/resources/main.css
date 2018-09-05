@@ -65,6 +65,7 @@ label {
 .first{
     position: relative;
     left: 120px;
+    width: 500px;
 }
 
 #mmr{
@@ -80,6 +81,7 @@ label {
     height: 100%;
     display: inline-block;
     float: left;
+    z-index: 9999;
 }
 
 .social div > img {
@@ -129,8 +131,8 @@ label {
 #top250 li h5 {
     width: 180px;
     text-align: center;
-    color: gray;
-    font-family: sans-serif;
+    color: black;
+    font-family: 'Dancing Script', cursive;
     margin-right: 150px;
     
 }
@@ -265,6 +267,10 @@ label {
     display: inline-block;
 }
 
+.padding50 {
+	padding-top: 50px; 
+}
+
 /* Sports */
 
 .sports_menu {
@@ -374,22 +380,195 @@ label {
 /* mapreduce */
 
 h1 {text-align: center; padding: 20px 0;}
-#wrap {width: 80%; height: auto; margin-left: 10%;}
+#wrap1 {width: 100%;
+    height: 800px;
+    float: left;
+}
+#wrap2 {
+	width:80%;
+    height: 600px;
+    padding-top: 50px;
+    margin-left: 10%;
+}
+#wrap3{width: 44%;
+    height: 600px;
+    display: inline-block;
+    float:left;
+    margin-left: 4%;
+}
 #dataList {list-style-type: none; width:100%; padding-left:0;}
 #dataList li {cursor: pointer; display:inline-block; width:50%;}
-#dataList li button{width:100%;}
-#dataList li:hover {background-color: yellow;}
+#dataList li button{
+	width:100%;
+    background-color: white;
+    color: black;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border: 2px solid #000000;
+}
 #choiceList {list-style-type: none; width:100%; padding-left:0;}
-#choiceList li {cursor: pointer; display:inline-block; width:33%;}
-#choiceList li button{width:100%;}
-#choiceList li:hover {background-color: yellow;}
-#step2, #step3, #step4, #step5, #step6 {display: none;}
+#choiceList li {cursor: pointer; display:inline-block; width:32.8%;}
+#choiceList li button{
+	width:100%;
+    background-color: white;
+    color: black;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border: 2px solid #000000;}
+#step3 select {
+	width:100%;
+    background-color: white;
+    color: black;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border: 2px solid #000000;
+}
+#step1 button:hover {
+	background-color: gray;
+	color: white;
+}
+#step2 button:hover {
+	background-color: gray;
+	color: white;
+}
+#step3 button:hover {
+	background-color: gray;
+	color: white;
+}
+#step3 button {
+	width:20%;
+    background-color: white;
+    color: black;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border: 2px solid #000000;
+}
+#step4 {
+	width: 44%;
+	height: 600px; 
+	display: inline-block; 
+	float: left; 
+	margin-left: 4%;"
+}
+#step2, #step3, #step4, #step5 {display: none; text-align: center;}
 #bar_body {width: 100%; background-color: green; margin-bottom: 50px;}
 #bar_div {width: 0%; height: 25px; background-color: red; text-align: center; font-weight: bold; color: white;}
-.btn1 {width: calc(50% - 3px); display: inline-block;}
-.btn2 {width: 100%;}
-.active {background-color: yellow;}
-#chart_body {width: 100%; height: 300px;}
+#chart_body {width: 100%; height: 500px;}
 
+/* Loading */
+#loading {
+ width: 100%;  
+ height: 100%;  
+ top: 0px;
+ left: 0px;
+ position: fixed;  
+ display: block;  
+ opacity: 0.7;  
+ background-color: #fff;  
+ z-index: 99;  
+ text-align: center; } 
+  
+#loading-image {  
+ position: absolute;  
+ top: 50%;  
+ left: 50%; 
+ z-index: 100; }
+ 
+ /* 팝업 레이아웃 */
+.dim-layer {
+  display: none;
+  position: fixed;
+  _position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 600px;
+  height: 300px;
+  z-index: 100;
+}
+
+.dim-layer .dimBg {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 600px;
+  height: auto;
+  background: #000;
+  opacity: .5;
+  filter: alpha(opacity=50);
+  z-index: 1;
+}
+.pop-layer p.ctxt {
+  color: #666;
+  line-height: 25px;
+}
+
+
+
+.dim-layer .pop-layer {
+  display: inline-block;
+}
+
+.pop-layer {
+  display: none;
+  position: absolute;
+  top: -20%;
+  left: 0%;
+  width: 600px;
+  height: auto;
+  background-color: #fff;
+  border: 5px solid #3571B5;
+  z-index: 10;
+}
+
+.pop-layer .btn-r {
+  width: 550px;
+  margin: 10px 0 20px;
+  padding-top: 10px;
+  border-top: 1px solid #DDD;
+  text-align: right;
+  z-index: 2;
+  position: relative;
+}
+
+a.btn-layerClose {
+  display: inline-block;
+  height: 25px;
+  padding: 0 14px 0;
+  border: 1px solid #304a8a;
+  background-color: #3f5a9d;
+  font-size: 13px;
+  color: #fff;
+  line-height: 25px;
+}
+
+a.btn-layerClose:hover {
+  border: 1px solid #091940;
+  background-color: #1f326a;
+  color: #fff;
+}
+
+.pop-layer .pop-container {
+  padding: 20px 25px;
+}
 
 

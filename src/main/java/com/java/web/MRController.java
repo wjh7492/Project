@@ -89,7 +89,13 @@ public class MRController {
 				getDir(newPath + "/" + name);
 			} else {
 				resultMap = new HashMap<String, Object>();
-				resultMap.put(name, newPath + "/" + name);
+//				resultMap.put("path", newPath + "/" + name);
+				resultMap.put("key", name);
+				if("summer.csv".equals(name)){
+					resultMap.put("type", "하계올림픽");
+				}else {
+					resultMap.put("type", "동계올림픽");
+				}
 				resultList.add(resultMap);
 			}
 		}
